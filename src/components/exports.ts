@@ -22,7 +22,6 @@ export type GroupId =
   | 'textures'
   | 'demokit'
   | 'reference'
-  | 'live'
 
 export const GROUPS: { id: GroupId; label: string }[] = [
   { id: 'start',       label: 'Getting started' },
@@ -32,7 +31,6 @@ export const GROUPS: { id: GroupId; label: string }[] = [
   { id: 'textures',    label: 'Textures'       },
   { id: 'demokit',     label: 'Demo kit'       },
   { id: 'reference',   label: 'Reference'      },
-  { id: 'live',        label: 'Live demos'     },
 ]
 
 export const EXPORTS: ExportEntry[] = [
@@ -65,10 +63,6 @@ export const EXPORTS: ExportEntry[] = [
   // Reference
   { slug: 'types', name: 'Types index', group: 'reference', href: '/reference/types/', lede: 'BookProps, the Cover/Page/Spread/Text prop shapes, and the hook return types at a glance.', badge: 'TYPE' },
   { slug: 'enums', name: 'Enums', group: 'reference', href: '/reference/enums/', lede: 'BookDirection and AutoTurnDirection, re-exported from the core library.', badge: 'TYPE' },
-
-  // Live demos
-  { slug: 'editor',  name: 'Interactive editor', group: 'live', href: '/live/editor/', lede: 'The full React studio: tune geometry, drop in textures, and edit pages declaratively.', badge: 'FULL-SCREEN' },
-  { slug: 'minimal', name: 'Minimal book', group: 'live', href: '/live/minimal/', lede: 'The smallest React setup — a <Book> with a few <Page>s you can drag to turn.', badge: 'FULL-SCREEN' },
 ]
 
 export function groupOf(id: GroupId) {

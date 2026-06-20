@@ -3,6 +3,7 @@ import { ArrowDownToLine, BookOpen, Code2, PlayCircle } from 'lucide-react'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Eyebrow } from '@/components/Eyebrow'
 import { GROUPS, exportsByGroup, LIB_VERSION, NPM_URL } from '@/components/exports'
+import { LiveBook } from '@/components/live/examples'
 
 const INSTALL = `pnpm add @objectifthunes/react-three-book @objectifthunes/three-book \\
   three @react-three/fiber @react-three/drei`
@@ -48,10 +49,14 @@ export default async function HomePage() {
           children, or drive everything imperatively with hooks. Every export documented, with working examples.
         </p>
         <div className="landing__hero-actions">
-          <Link className="landing__cta landing__cta--primary" href="/full/editor/">Open the live editor ↗</Link>
+          <Link className="landing__cta landing__cta--primary" href="/start/quick-start/">Quick start ↗</Link>
           <Link className="landing__cta" href="/start/quick-start/">Quick start</Link>
           <a className="landing__cta" href={NPM_URL} target="_blank" rel="noopener noreferrer">npm</a>
         </div>
+      </section>
+
+      <section className="landing__block">
+        <LiveBook />
       </section>
 
       <section>
@@ -85,9 +90,9 @@ export default async function HomePage() {
         <div className="landing__skill-header">
           <div>
             <Eyebrow icon={<PlayCircle size={12} strokeWidth={1.75} />}>SEE IT MOVE</Eyebrow>
-            <h2 className="landing__skill-title">Two live demos, no install.</h2>
+            <h2 className="landing__skill-title">Live, all the way down.</h2>
           </div>
-          <Link className="landing__skill-cta" href="/full/editor/">Open editor</Link>
+          <Link className="landing__skill-cta" href="/components/book/">The Book</Link>
         </div>
         <p style={{ color: 'var(--ot-text-secondary)', fontSize: 14 }}>
           The <strong>Interactive editor</strong> is the full React studio — geometry, textures and a WYSIWYG

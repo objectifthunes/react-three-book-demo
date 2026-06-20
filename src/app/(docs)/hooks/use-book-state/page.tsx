@@ -4,6 +4,7 @@ import { Source } from '@/components/Source'
 import { Notes } from '@/components/Notes'
 import { PropTable } from '@/components/PropTable'
 import { findExport } from '@/components/exports'
+import { LiveState } from '@/components/live/examples'
 
 const e = findExport('/hooks/use-book-state/')!
 
@@ -33,6 +34,7 @@ function Toolbar() {
 export default async function Page() {
   return (
     <ExportPage group={e.group} title={e.name} lede={e.lede}>
+      <LiveState />
       <Source code={CODE} lang="tsx" />
       <PropTable
         label="RETURNS — BookState"

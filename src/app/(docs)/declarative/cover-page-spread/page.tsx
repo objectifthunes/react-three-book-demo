@@ -4,6 +4,7 @@ import { Source } from '@/components/Source'
 import { Notes } from '@/components/Notes'
 import { PropTable } from '@/components/PropTable'
 import { findExport } from '@/components/exports'
+import { LiveDeclarative } from '@/components/live/examples'
 
 const e = findExport('/declarative/cover-page-spread/')!
 
@@ -40,6 +41,7 @@ function MyBook({ frontImg, backImg, spreadImg }) {
 export default async function Page() {
   return (
     <ExportPage group={e.group} title={e.name} lede={e.lede}>
+      <LiveDeclarative />
       <Source code={CODE} lang="tsx" />
       <PropTable
         label="SHARED PROPS"

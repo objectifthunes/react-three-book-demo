@@ -4,6 +4,7 @@ import { Source } from '@/components/Source'
 import { Notes } from '@/components/Notes'
 import { PropTable } from '@/components/PropTable'
 import { findExport } from '@/components/exports'
+import { LiveControls } from '@/components/live/examples'
 
 const e = findExport('/hooks/use-book-controls/')!
 
@@ -38,6 +39,7 @@ function Controls() {
 export default async function Page() {
   return (
     <ExportPage group={e.group} title={e.name} lede={e.lede}>
+      <LiveControls />
       <Source code={CODE} lang="tsx" />
       <Source code={REF_CODE} lang="tsx" />
       <PropTable

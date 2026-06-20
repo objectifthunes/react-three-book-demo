@@ -3,8 +3,8 @@ import { ExportPage } from '@/components/ExportPage'
 import { Source } from '@/components/Source'
 import { Notes } from '@/components/Notes'
 import { PropTable } from '@/components/PropTable'
-import { FullScreenPreview } from '@/components/Preview'
 import { findExport } from '@/components/exports'
+import { LiveBook } from '@/components/live/examples'
 
 const e = findExport('/components/book/')!
 
@@ -50,6 +50,7 @@ function Scene() {
 export default async function Page() {
   return (
     <ExportPage group={e.group} title={e.name} lede={e.lede}>
+      <LiveBook />
       <Source code={CODE} lang="tsx" />
       <PropTable
         rows={[
@@ -99,7 +100,6 @@ export default async function Page() {
           <Link href="/reference/types/">types index</Link>.
         </p>
       </Notes>
-      <FullScreenPreview href="/full/editor/" illustration={null} />
     </ExportPage>
   )
 }

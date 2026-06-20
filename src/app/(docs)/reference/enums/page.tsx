@@ -4,6 +4,7 @@ import { Source } from '@/components/Source'
 import { Notes } from '@/components/Notes'
 import { PropTable } from '@/components/PropTable'
 import { findExport } from '@/components/exports'
+import { LiveAutoTurn } from '@/components/live/examples'
 
 const e = findExport('/reference/enums/')!
 
@@ -23,6 +24,7 @@ book.startAutoTurning(AutoTurnDirection.Back, settings)`
 export default async function Page() {
   return (
     <ExportPage group={e.group} title={e.name} lede={e.lede}>
+      <LiveAutoTurn />
       <Source code={CODE} lang="tsx" />
       <PropTable
         label="BookDirection"

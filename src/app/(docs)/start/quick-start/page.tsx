@@ -4,6 +4,7 @@ import { Source } from '@/components/Source'
 import { Notes } from '@/components/Notes'
 import { PropTable } from '@/components/PropTable'
 import { findExport } from '@/components/exports'
+import { LiveBook } from '@/components/live/examples'
 
 const e = findExport('/start/quick-start/')!
 
@@ -43,6 +44,7 @@ export default function MyBook() {
 export default async function Page() {
   return (
     <ExportPage group={e.group} title={e.name} lede={e.lede}>
+      <LiveBook />
       <Source code={INSTALL} lang="bash" />
       <Source code={CODE} lang="tsx" />
       <PropTable
@@ -67,7 +69,7 @@ export default async function Page() {
           The four <code>&lt;Cover&gt;</code> elements map to the four physical cover surfaces (front-outer,
           front-inner, back-inner, back-outer). See <Link href="/declarative/cover-page-spread/">Cover, Page &amp; Spread</Link>{' '}
           for the full content model, the <Link href="/components/book/">&lt;Book&gt;</Link> page for every prop, and the{' '}
-          <Link href="/full/editor/">interactive editor</Link> to try it live.
+          <Link href="/components/book/">Book page</Link> to try it live.
         </p>
       </Notes>
     </ExportPage>

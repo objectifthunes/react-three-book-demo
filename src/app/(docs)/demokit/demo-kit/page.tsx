@@ -3,8 +3,8 @@ import { ExportPage } from '@/components/ExportPage'
 import { Source } from '@/components/Source'
 import { Notes } from '@/components/Notes'
 import { PropTable } from '@/components/PropTable'
-import { FullScreenPreview } from '@/components/Preview'
 import { findExport } from '@/components/exports'
+import { LiveBook } from '@/components/live/examples'
 
 const e = findExport('/demokit/demo-kit/')!
 
@@ -33,6 +33,7 @@ function ControlPanel() {
 export default async function Page() {
   return (
     <ExportPage group={e.group} title={e.name} lede={e.lede}>
+      <LiveBook />
       <Source code={CODE} lang="tsx" />
       <PropTable
         label="COMPONENTS"
@@ -62,7 +63,6 @@ export default async function Page() {
           { name: 'resolvePageIndex', type: '(currentPage, spreadPages, pageCount) => ResolvedPage', desc: 'Resolves the effective page index and whether it is part of a spread.' },
         ]}
       />
-      <FullScreenPreview href="/full/editor/" illustration={null} />
       <Notes>
         <p>
           Import the demo kit from the dedicated subpath{' '}
