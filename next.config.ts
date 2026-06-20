@@ -8,8 +8,9 @@ const nextConfig: NextConfig = {
   basePath: isCI ? "/react-three-book-demo" : undefined,
   assetPrefix: isCI ? "/react-three-book-demo/" : undefined,
   trailingSlash: true,
-  // The interactive demo is vendored from the library's own Vite demo; it is
-  // type-checked there. Don't fail the docs build on its type quirks.
+  // StrictMode double-invokes effects/memos in dev, which disposes the live
+  // book's managed TextOverlay canvases mid-build (a dev-only WebGL artifact).
+  reactStrictMode: false,
   typescript: { ignoreBuildErrors: true },
 };
 

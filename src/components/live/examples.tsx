@@ -148,28 +148,54 @@ export function LiveState() {
   )
 }
 
-/** Declarative content: the whole book is Cover / Page JSX. */
+/** Declarative content: the whole book is Cover / Page / Text JSX. */
 export function LiveDeclarative() {
   const bookRef = useRef<ThreeBook | null>(null)
   return (
-    <LiveR3FStage hint="Every surface is JSX — <Cover>, <Page>, <Spread> and <Text> children of <Book>">
+    <LiveR3FStage hint="Every surface is JSX — <Cover>, <Page> and <Text> children of <Book>">
       <BookFrame bookRef={bookRef}>
         <Cover color="#1f3a5f" />
         <Cover color="#1f3a5f" />
         <Cover color="#1f3a5f" />
         <Cover color="#1f3a5f" />
-        {pageEls(8)}
+        <Page color={PAGE_COLOR} />
+        <Page color={PAGE_COLOR}>
+          <Text x={56} y={150} width={400} fontSize={40} fontFamily="Georgia" fontStyle="italic" color="#1a1a1a" textAlign="center">Chapter One</Text>
+        </Page>
+        <Page color={PAGE_COLOR}>
+          <Text x={56} y={170} width={400} fontSize={26} color="#333333" textAlign="center">It was a dark and stormy night…</Text>
+        </Page>
+        {pageEls(5)}
       </BookFrame>
     </LiveR3FStage>
   )
 }
 
-/** Pages carry styled text (the page labels are <Text> rendered by the library). */
+const TEXT_PRESETS = ['Chapter One', 'Once upon a time', 'The End']
+
+/** A styled <Text> on a page, editable via presets. */
 export function LiveText() {
   const bookRef = useRef<ThreeBook | null>(null)
+  const [text, setText] = useState(TEXT_PRESETS[0])
   return (
-    <LiveR3FStage hint="Each page here carries a <Text> block — drag to leaf through them">
-      <BookFrame bookRef={bookRef}>{coverEls()}{pageEls(8)}</BookFrame>
+    <LiveR3FStage
+      hint="<Text> renders a styled TextBlock onto its parent page"
+      controls={
+        <LiveRow>
+          {TEXT_PRESETS.map((t) => (
+            <LiveButton key={t} active={text === t} onClick={() => setText(t)}>{t}</LiveButton>
+          ))}
+        </LiveRow>
+      }
+    >
+      <BookFrame bookRef={bookRef}>
+        {coverEls()}
+        <Page color={PAGE_COLOR} />
+        <Page color={PAGE_COLOR}>
+          <Text x={56} y={150} width={400} fontSize={46} fontFamily="Georgia" fontStyle="italic" color="#1a1a1a" textAlign="center">{text}</Text>
+        </Page>
+        {pageEls(6)}
+      </BookFrame>
     </LiveR3FStage>
   )
 }
