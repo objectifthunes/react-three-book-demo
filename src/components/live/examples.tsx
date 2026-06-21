@@ -17,6 +17,7 @@ import {
 } from '@objectifthunes/react-three-book'
 import { LiveR3FStage } from './LiveR3FStage'
 import { LiveRow, LiveButton, LiveSlider, LiveToggle, LiveReadout } from './controls'
+import { illustratedPageDataUrl, coverArtDataUrl, parchmentDataUrl, loadImage } from './storybook'
 
 const PAGE_COLOR = '#f5efe0'
 const COVER_COLOR = '#7b3f00'
@@ -72,12 +73,46 @@ function pageEls(count = 8, from = 1) {
   ))
 }
 
+// Illustrated storybook content: a bound cover, parchment endpapers and a pool of
+// hand-drawn plates. Loading these as images also suppresses the auto labels.
+type Art = { cover: HTMLImageElement; parch: HTMLImageElement; plates: HTMLImageElement[] }
+const PLATE_TITLES = ['The Quiet Valley', 'Over the Hills', 'The Long Road', 'Evening Falls', 'Homeward', 'A New Morning']
+let _art: Art | null = null
+let _artPromise: Promise<Art> | null = null
+function loadArt(): Promise<Art> {
+  if (_art) return Promise.resolve(_art)
+  if (!_artPromise) {
+    _artPromise = Promise.all([
+      loadImage(coverArtDataUrl('A Storybook', '#5a3b8c')),
+      loadImage(parchmentDataUrl()),
+      ...PLATE_TITLES.map((t, i) => loadImage(illustratedPageDataUrl(i + 1, t))),
+    ]).then(([cover, parch, ...plates]) => (_art = { cover, parch, plates }))
+  }
+  return _artPromise
+}
+function useStorybookArt(): Art | null {
+  const [art, setArt] = useState<Art | null>(_art)
+  useEffect(() => { let alive = true; loadArt().then((a) => { if (alive) setArt(a) }); return () => { alive = false } }, [])
+  return art
+}
+function storyCovers(art: Art) {
+  return [art.cover, art.parch, art.parch, art.cover].map((image, i) => (
+    <Cover key={`c${i}`} color={COVER_COLOR} image={image} fitMode="cover" fullBleed />
+  ))
+}
+function storyPages(art: Art, count = 8) {
+  return Array.from({ length: count }).map((_, i) => (
+    <Page key={`p${i}`} color={PAGE_COLOR} image={art.plates[i % art.plates.length]} fitMode="cover" fullBleed />
+  ))
+}
+
 /** A draggable book, opened to page 1. */
 export function LiveBook({ pageCount = 8, hint = 'Drag a page to turn it · drag the background to orbit' }: { pageCount?: number; hint?: string }) {
   const bookRef = useRef<ThreeBook | null>(null)
+  const art = useStorybookArt()
   return (
     <LiveR3FStage hint={hint}>
-      <BookFrame bookRef={bookRef}>{coverEls()}{pageEls(pageCount)}</BookFrame>
+      {art && <BookFrame bookRef={bookRef}>{storyCovers(art)}{storyPages(art, pageCount)}</BookFrame>}
     </LiveR3FStage>
   )
 }
@@ -86,6 +121,7 @@ export function LiveBook({ pageCount = 8, hint = 'Drag a page to turn it · drag
 export function LiveAutoTurn() {
   const bookRef = useRef<ThreeBook | null>(null)
   const settings = useMemo(() => new AutoTurnSettings(), [])
+  const art = useStorybookArt()
   const turn = (dir: AutoTurnDirection, count = 1) => bookRef.current?.startAutoTurning(dir, settings, count)
   return (
     <LiveR3FStage
@@ -99,7 +135,7 @@ export function LiveAutoTurn() {
         </LiveRow>
       }
     >
-      <BookFrame bookRef={bookRef}>{coverEls()}{pageEls(10)}</BookFrame>
+      {art && <BookFrame bookRef={bookRef}>{storyCovers(art)}{storyPages(art, 10)}</BookFrame>}
     </LiveR3FStage>
   )
 }
@@ -108,13 +144,14 @@ export function LiveAutoTurn() {
 export function LiveControls() {
   const bookRef = useRef<ThreeBook | null>(null)
   const [v, setV] = useState(0)
+  const art = useStorybookArt()
   const onChange = (val: number) => { setV(val); bookRef.current?.setOpenProgress(val) }
   return (
     <LiveR3FStage
       hint="The slider calls book.setOpenProgress(t) — 0 closed, 1 fully open"
       controls={<LiveSlider label="openProgress" min={0} max={1} step={0.01} value={v} onChange={onChange} format={(x) => x.toFixed(2)} />}
     >
-      <BookFrame bookRef={bookRef} openToPage={-1}>{coverEls()}{pageEls(8)}</BookFrame>
+      {art && <BookFrame bookRef={bookRef} openToPage={-1}>{storyCovers(art)}{storyPages(art, 8)}</BookFrame>}
     </LiveR3FStage>
   )
 }
@@ -122,6 +159,7 @@ export function LiveControls() {
 /** Reactive state read off the live book each frame. */
 export function LiveState() {
   const bookRef = useRef<ThreeBook | null>(null)
+  const art = useStorybookArt()
   const [s, setS] = useState({ turning: false, falling: false, idle: true, progress: 0, papers: 0 })
   useEffect(() => {
     const id = setInterval(() => {
@@ -143,7 +181,7 @@ export function LiveState() {
         </LiveRow>
       }
     >
-      <BookFrame bookRef={bookRef}>{coverEls()}{pageEls(8)}</BookFrame>
+      {art && <BookFrame bookRef={bookRef}>{storyCovers(art)}{storyPages(art, 8)}</BookFrame>}
     </LiveR3FStage>
   )
 }
