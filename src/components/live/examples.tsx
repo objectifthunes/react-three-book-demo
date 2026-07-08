@@ -56,7 +56,7 @@ function BookFrame({ bookRef, onReady, openToPage = 1, kind = 'staple', children
   }, [onReady, openToPage])
   return (
     <>
-      <OrbitControls ref={orbit as never} makeDefault enableDamping dampingFactor={0.05} enablePan={false} minDistance={2.5} maxDistance={12} target={[0, 0, 0]} />
+      <OrbitControls ref={orbit as never} makeDefault enableDamping dampingFactor={0.05} enablePan screenSpacePanning minDistance={2} maxDistance={16} target={[0, 0, 1.4]} />
       <Book
         ref={bookRef}
         binding={binding}
@@ -130,6 +130,9 @@ function useSpineToggle(initial: SpineKind = 'staple') {
   )
   return { kind, control }
 }
+// NOTE: switching the binding here is a single setState → BookFrame's useMemo
+// rebuilds the binding on the next render, so one press is enough (no ref race
+// like the vanilla demo's imperative rebuild path).
 
 /** A draggable book, opened to page 1 — flip the spine with the toggle. */
 export function LiveBook({ pageCount = 8, hint = 'Drag a page to turn it · drag the background to orbit', initialKind = 'staple' as SpineKind }: { pageCount?: number; hint?: string; initialKind?: SpineKind }) {
@@ -137,7 +140,7 @@ export function LiveBook({ pageCount = 8, hint = 'Drag a page to turn it · drag
   const art = useStorybookArt()
   const { kind, control } = useSpineToggle(initialKind)
   return (
-    <LiveR3FStage hint={hint} controls={control}>
+    <LiveR3FStage hint={hint} overlay={control}>
       {art && <BookFrame bookRef={bookRef} kind={kind}>{storyCovers(art)}{storyPages(art, pageCount)}</BookFrame>}
     </LiveR3FStage>
   )
@@ -158,9 +161,9 @@ export function LiveAutoTurn() {
   return (
     <LiveR3FStage
       hint="Each button drives the book — turnNext / turnPrev / turnAll under the hood"
+      overlay={control}
       controls={
         <>
-          {control}
           <LiveRow>
             <LiveButton onClick={() => turn(AutoTurnDirection.Next, 1)}>Next ▸</LiveButton>
             <LiveButton onClick={() => turn(AutoTurnDirection.Back, 1)}>◂ Prev</LiveButton>
@@ -185,9 +188,9 @@ export function LiveControls() {
   return (
     <LiveR3FStage
       hint="The slider calls book.setOpenProgress(t) — 0 closed, 1 fully open"
+      overlay={control}
       controls={
         <>
-          {control}
           <LiveSlider label="openProgress" min={0} max={1} step={0.01} value={v} onChange={onChange} format={(x) => x.toFixed(2)} />
         </>
       }
@@ -213,9 +216,9 @@ export function LiveState() {
   return (
     <LiveR3FStage
       hint="Drag a page — these read off the book every frame (useBookState in the source)"
+      overlay={control}
       controls={
         <>
-          {control}
           <LiveRow>
             <LiveReadout label="isTurning" value={String(s.turning)} />
             <LiveReadout label="isFalling" value={String(s.falling)} />
@@ -236,7 +239,7 @@ export function LiveDeclarative() {
   const bookRef = useRef<ThreeBook | null>(null)
   const { kind, control } = useSpineToggle()
   return (
-    <LiveR3FStage hint="Every surface is JSX — <Cover>, <Page> and <Text> children of <Book>" controls={control}>
+    <LiveR3FStage hint="Every surface is JSX — <Cover>, <Page> and <Text> children of <Book>" overlay={control}>
       <BookFrame bookRef={bookRef} kind={kind}>
         <Cover color="#1f3a5f" />
         <Cover color="#1f3a5f" />
@@ -265,9 +268,9 @@ export function LiveText() {
   return (
     <LiveR3FStage
       hint="<Text> renders a styled TextBlock onto its parent page"
+      overlay={control}
       controls={
         <>
-          {control}
           <LiveRow>
             {TEXT_PRESETS.map((t) => (
               <LiveButton key={t} active={text === t} onClick={() => setText(t)}>{t}</LiveButton>
@@ -316,9 +319,9 @@ export function LiveTextures() {
   return (
     <LiveR3FStage
       hint="<Page image={img} fitMode=… fullBleed> draws an image with the chosen fit"
+      overlay={control}
       controls={
         <>
-          {control}
           <LiveRow>
             {(['contain', 'cover', 'fill'] as const).map((f) => (
               <LiveButton key={f} active={fit === f} onClick={() => setFit(f)}>{f}</LiveButton>

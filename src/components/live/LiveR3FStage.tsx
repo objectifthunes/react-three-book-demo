@@ -23,9 +23,11 @@ function DuskSky() {
 }
 
 /** A framed, in-page React Three Fiber canvas with scene chrome + optional controls. */
-export function LiveR3FStage({ children, controls, hint, tall }: {
+export function LiveR3FStage({ children, controls, overlay, hint, tall }: {
   children: ReactNode
   controls?: ReactNode
+  /** A floating overlay pinned to the top of the canvas (the spine switch). */
+  overlay?: ReactNode
   hint?: string
   tall?: boolean
 }) {
@@ -34,7 +36,8 @@ export function LiveR3FStage({ children, controls, hint, tall }: {
       <Eyebrow icon={<Eye size={12} strokeWidth={1.75} />}>LIVE</Eyebrow>
       <div className="live">
         <div className={`live__stage${tall ? ' live__stage--tall' : ''}`}>
-          <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 3.7, 4.4], fov: 45 }} gl={{ antialias: true, toneMappingExposure: 1.05 }}>
+          {overlay ? <div className="live__overlay">{overlay}</div> : null}
+          <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 4.3, 5.6], fov: 45 }} gl={{ antialias: true, toneMappingExposure: 1.05 }}>
             <DuskSky />
             <fog attach="fog" args={[0x6a4a5e, 9, 22]} />
             {/* Dusk lighting: warm sky / cool ground bounce, a low golden key, cool indigo rim. */}

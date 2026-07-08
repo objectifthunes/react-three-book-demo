@@ -45,7 +45,8 @@ export const EXPORTS: ExportEntry[] = [
   { slug: 'interaction', name: 'BookInteraction', group: 'components', href: '/components/interaction/', lede: 'Pointer-drag page turning as a child of <Book>, with optional OrbitControls hand-off.', badge: 'COMPONENT' },
 
   // Binding
-  { slug: 'glued-book-binding', name: 'GluedBookBinding', group: 'binding', href: '/binding/glued-book-binding/', lede: 'The premium hardcover spine as a binding you pass to <Book>: glued page block, rigid boards, one smooth cover shell.', badge: 'CLASS' },
+  { slug: 'staple-book-binding', name: 'StapleBookBinding', group: 'binding', href: '/binding/staple-book-binding/', lede: 'The saddle-stitched magazine spine you pass to <Book>: folded sheets down a stapled fold, no setup.', badge: 'CLASS' },
+  { slug: 'glued-book-binding', name: 'GluedBookBinding', group: 'binding', href: '/binding/glued-book-binding/', lede: 'The hardcover case spine you pass to <Book>: glued page block, rigid boards, one smooth cover shell.', badge: 'CLASS' },
 
   // Declarative content
   { slug: 'cover-page-spread', name: 'Cover, Page & Spread', group: 'declarative', href: '/declarative/cover-page-spread/', lede: 'Declare covers, pages and double-page spreads as JSX children instead of building BookContent by hand.', badge: 'COMPONENT' },
