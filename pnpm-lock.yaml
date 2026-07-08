@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@objectifthunes/react-three-book':
-        specifier: ^0.6.7
-        version: 0.6.7(@objectifthunes/three-book@0.5.8(three@0.172.0))(@react-three/fiber@9.6.1(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(three@0.172.0))(react@19.2.4)(three@0.172.0)
+        specifier: ^0.7.0
+        version: 0.7.0(@objectifthunes/three-book@0.6.0(three@0.172.0))(@react-three/fiber@9.6.1(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(three@0.172.0))(react@19.2.4)(three@0.172.0)
       '@objectifthunes/three-book':
-        specifier: ^0.5.8
-        version: 0.5.8(three@0.172.0)
+        specifier: ^0.6.0
+        version: 0.6.0(three@0.172.0)
       '@react-three/drei':
         specifier: ^10.0.0
         version: 10.7.7(@react-three/fiber@9.6.1(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(three@0.172.0))(@types/react@19.2.17)(@types/three@0.172.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(three@0.172.0)
@@ -451,16 +451,16 @@ packages:
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
 
-  '@objectifthunes/react-three-book@0.6.7':
-    resolution: {integrity: sha512-5PhRJACDMxBzscxe6wLNWSUD7B35loJPiIqiLR4I2CvgBZCq0LrJGcL/Xav/oUhqeN9VqcIEtMy5szp6UViEKA==}
+  '@objectifthunes/react-three-book@0.7.0':
+    resolution: {integrity: sha512-DoWRfR7ynUa2Fq85quXeqkxLqIvT/BkuuOFMlt5oNdWSu+ZV6Z5eszOY7BbTE5ETdOlt1RV1KimfXEdRxlrxaQ==}
     peerDependencies:
-      '@objectifthunes/three-book': '>=0.5.8'
+      '@objectifthunes/three-book': '>=0.6.0'
       '@react-three/fiber': '>=8.0.0'
       react: '>=18.0.0'
       three: '>=0.150.0'
 
-  '@objectifthunes/three-book@0.5.8':
-    resolution: {integrity: sha512-xa7plb7TuqRm5R/QgbNYkINOu84ASILFW4yvz/L5AYM8MjQOg56PPqb8WTtlNMibe6ddWZhGd1VypG2qpG7iRA==}
+  '@objectifthunes/three-book@0.6.0':
+    resolution: {integrity: sha512-OtKu5m1EZVm4P/zZarfkh2nST1MCs/L3hY33zGSAwCe30Fi4I9Pex0t8Dv9gRCbzX6KRAAh2+G5K1s3+MHgJ3A==}
     peerDependencies:
       three: '>=0.150.0'
 
@@ -2758,14 +2758,14 @@ snapshots:
 
   '@nolyfill/is-core-module@1.0.39': {}
 
-  '@objectifthunes/react-three-book@0.6.7(@objectifthunes/three-book@0.5.8(three@0.172.0))(@react-three/fiber@9.6.1(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(three@0.172.0))(react@19.2.4)(three@0.172.0)':
+  '@objectifthunes/react-three-book@0.7.0(@objectifthunes/three-book@0.6.0(three@0.172.0))(@react-three/fiber@9.6.1(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(three@0.172.0))(react@19.2.4)(three@0.172.0)':
     dependencies:
-      '@objectifthunes/three-book': 0.5.8(three@0.172.0)
+      '@objectifthunes/three-book': 0.6.0(three@0.172.0)
       '@react-three/fiber': 9.6.1(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(three@0.172.0)
       react: 19.2.4
       three: 0.172.0
 
-  '@objectifthunes/three-book@0.5.8(three@0.172.0)':
+  '@objectifthunes/three-book@0.6.0(three@0.172.0)':
     dependencies:
       three: 0.172.0
 
