@@ -118,26 +118,34 @@ function storyPages(art: Art, count = 8) {
   ))
 }
 
-/** A draggable book, opened to page 1. */
-export function LiveBook({ pageCount = 8, hint = 'Drag a page to turn it · drag the background to orbit' }: { pageCount?: number; hint?: string }) {
+/** A segmented staple/hardcover spine switch for the live canvases. */
+type SpineKind = 'staple' | 'glued'
+function useSpineToggle(initial: SpineKind = 'staple') {
+  const [kind, setKind] = useState<SpineKind>(initial)
+  const control = (
+    <LiveRow>
+      <LiveButton active={kind === 'staple'} onClick={() => setKind('staple')}>Staple</LiveButton>
+      <LiveButton active={kind === 'glued'} onClick={() => setKind('glued')}>Hardcover</LiveButton>
+    </LiveRow>
+  )
+  return { kind, control }
+}
+
+/** A draggable book, opened to page 1 — flip the spine with the toggle. */
+export function LiveBook({ pageCount = 8, hint = 'Drag a page to turn it · drag the background to orbit', initialKind = 'staple' as SpineKind }: { pageCount?: number; hint?: string; initialKind?: SpineKind }) {
   const bookRef = useRef<ThreeBook | null>(null)
   const art = useStorybookArt()
+  const { kind, control } = useSpineToggle(initialKind)
   return (
-    <LiveR3FStage hint={hint}>
-      {art && <BookFrame bookRef={bookRef}>{storyCovers(art)}{storyPages(art, pageCount)}</BookFrame>}
+    <LiveR3FStage hint={hint} controls={control}>
+      {art && <BookFrame bookRef={bookRef} kind={kind}>{storyCovers(art)}{storyPages(art, pageCount)}</BookFrame>}
     </LiveR3FStage>
   )
 }
 
-/** The hardcover (glued-spine) case: rigid boards, one smooth cover shell. */
+/** The glued hardcover case, defaulting to Hardcover; toggle back to compare. */
 export function LiveGlued({ pageCount = 8 }: { pageCount?: number }) {
-  const bookRef = useRef<ThreeBook | null>(null)
-  const art = useStorybookArt()
-  return (
-    <LiveR3FStage hint="GluedBookBinding: rigid boards hinge, floppy pages glue to the smooth spine">
-      {art && <BookFrame bookRef={bookRef} kind="glued">{storyCovers(art)}{storyPages(art, pageCount)}</BookFrame>}
-    </LiveR3FStage>
-  )
+  return <LiveBook pageCount={pageCount} initialKind="glued" hint="GluedBookBinding: rigid boards hinge, floppy pages glue to the smooth spine. Flip to Staple to compare." />
 }
 
 /** Programmatic page turns via book.startAutoTurning(). */
@@ -145,20 +153,24 @@ export function LiveAutoTurn() {
   const bookRef = useRef<ThreeBook | null>(null)
   const settings = useMemo(() => new AutoTurnSettings(), [])
   const art = useStorybookArt()
+  const { kind, control } = useSpineToggle()
   const turn = (dir: AutoTurnDirection, count = 1) => bookRef.current?.startAutoTurning(dir, settings, count)
   return (
     <LiveR3FStage
       hint="Each button drives the book — turnNext / turnPrev / turnAll under the hood"
       controls={
-        <LiveRow>
-          <LiveButton onClick={() => turn(AutoTurnDirection.Next, 1)}>Next ▸</LiveButton>
-          <LiveButton onClick={() => turn(AutoTurnDirection.Back, 1)}>◂ Prev</LiveButton>
-          <LiveButton onClick={() => turn(AutoTurnDirection.Next, 99)}>Flip to end</LiveButton>
-          <LiveButton onClick={() => turn(AutoTurnDirection.Back, 99)}>Back to start</LiveButton>
-        </LiveRow>
+        <>
+          {control}
+          <LiveRow>
+            <LiveButton onClick={() => turn(AutoTurnDirection.Next, 1)}>Next ▸</LiveButton>
+            <LiveButton onClick={() => turn(AutoTurnDirection.Back, 1)}>◂ Prev</LiveButton>
+            <LiveButton onClick={() => turn(AutoTurnDirection.Next, 99)}>Flip to end</LiveButton>
+            <LiveButton onClick={() => turn(AutoTurnDirection.Back, 99)}>Back to start</LiveButton>
+          </LiveRow>
+        </>
       }
     >
-      {art && <BookFrame bookRef={bookRef}>{storyCovers(art)}{storyPages(art, 10)}</BookFrame>}
+      {art && <BookFrame bookRef={bookRef} kind={kind}>{storyCovers(art)}{storyPages(art, 10)}</BookFrame>}
     </LiveR3FStage>
   )
 }
@@ -168,13 +180,19 @@ export function LiveControls() {
   const bookRef = useRef<ThreeBook | null>(null)
   const [v, setV] = useState(0)
   const art = useStorybookArt()
+  const { kind, control } = useSpineToggle()
   const onChange = (val: number) => { setV(val); bookRef.current?.setOpenProgress(val) }
   return (
     <LiveR3FStage
       hint="The slider calls book.setOpenProgress(t) — 0 closed, 1 fully open"
-      controls={<LiveSlider label="openProgress" min={0} max={1} step={0.01} value={v} onChange={onChange} format={(x) => x.toFixed(2)} />}
+      controls={
+        <>
+          {control}
+          <LiveSlider label="openProgress" min={0} max={1} step={0.01} value={v} onChange={onChange} format={(x) => x.toFixed(2)} />
+        </>
+      }
     >
-      {art && <BookFrame bookRef={bookRef} openToPage={-1}>{storyCovers(art)}{storyPages(art, 8)}</BookFrame>}
+      {art && <BookFrame bookRef={bookRef} kind={kind} openToPage={-1}>{storyCovers(art)}{storyPages(art, 8)}</BookFrame>}
     </LiveR3FStage>
   )
 }
@@ -183,6 +201,7 @@ export function LiveControls() {
 export function LiveState() {
   const bookRef = useRef<ThreeBook | null>(null)
   const art = useStorybookArt()
+  const { kind, control } = useSpineToggle()
   const [s, setS] = useState({ turning: false, falling: false, idle: true, progress: 0, papers: 0 })
   useEffect(() => {
     const id = setInterval(() => {
@@ -195,16 +214,19 @@ export function LiveState() {
     <LiveR3FStage
       hint="Drag a page — these read off the book every frame (useBookState in the source)"
       controls={
-        <LiveRow>
-          <LiveReadout label="isTurning" value={String(s.turning)} />
-          <LiveReadout label="isFalling" value={String(s.falling)} />
-          <LiveReadout label="isIdle" value={String(s.idle)} />
-          <LiveReadout label="openProgress" value={s.progress.toFixed(2)} />
-          <LiveReadout label="paperCount" value={s.papers} />
-        </LiveRow>
+        <>
+          {control}
+          <LiveRow>
+            <LiveReadout label="isTurning" value={String(s.turning)} />
+            <LiveReadout label="isFalling" value={String(s.falling)} />
+            <LiveReadout label="isIdle" value={String(s.idle)} />
+            <LiveReadout label="openProgress" value={s.progress.toFixed(2)} />
+            <LiveReadout label="paperCount" value={s.papers} />
+          </LiveRow>
+        </>
       }
     >
-      {art && <BookFrame bookRef={bookRef}>{storyCovers(art)}{storyPages(art, 8)}</BookFrame>}
+      {art && <BookFrame bookRef={bookRef} kind={kind}>{storyCovers(art)}{storyPages(art, 8)}</BookFrame>}
     </LiveR3FStage>
   )
 }
@@ -212,9 +234,10 @@ export function LiveState() {
 /** Declarative content: the whole book is Cover / Page / Text JSX. */
 export function LiveDeclarative() {
   const bookRef = useRef<ThreeBook | null>(null)
+  const { kind, control } = useSpineToggle()
   return (
-    <LiveR3FStage hint="Every surface is JSX — <Cover>, <Page> and <Text> children of <Book>">
-      <BookFrame bookRef={bookRef}>
+    <LiveR3FStage hint="Every surface is JSX — <Cover>, <Page> and <Text> children of <Book>" controls={control}>
+      <BookFrame bookRef={bookRef} kind={kind}>
         <Cover color="#1f3a5f" />
         <Cover color="#1f3a5f" />
         <Cover color="#1f3a5f" />
@@ -238,18 +261,22 @@ const TEXT_PRESETS = ['Chapter One', 'Once upon a time', 'The End']
 export function LiveText() {
   const bookRef = useRef<ThreeBook | null>(null)
   const [text, setText] = useState(TEXT_PRESETS[0])
+  const { kind, control } = useSpineToggle()
   return (
     <LiveR3FStage
       hint="<Text> renders a styled TextBlock onto its parent page"
       controls={
-        <LiveRow>
-          {TEXT_PRESETS.map((t) => (
-            <LiveButton key={t} active={text === t} onClick={() => setText(t)}>{t}</LiveButton>
-          ))}
-        </LiveRow>
+        <>
+          {control}
+          <LiveRow>
+            {TEXT_PRESETS.map((t) => (
+              <LiveButton key={t} active={text === t} onClick={() => setText(t)}>{t}</LiveButton>
+            ))}
+          </LiveRow>
+        </>
       }
     >
-      <BookFrame bookRef={bookRef}>
+      <BookFrame bookRef={bookRef} kind={kind}>
         {coverEls()}
         <Page color={PAGE_COLOR} />
         <Page color={PAGE_COLOR}>
@@ -285,19 +312,23 @@ export function LiveTextures() {
   const img = usePatternImage()
   const [fit, setFit] = useState<'contain' | 'cover' | 'fill'>('cover')
   const [fullBleed, setFullBleed] = useState(true)
+  const { kind, control } = useSpineToggle()
   return (
     <LiveR3FStage
       hint="<Page image={img} fitMode=… fullBleed> draws an image with the chosen fit"
       controls={
-        <LiveRow>
-          {(['contain', 'cover', 'fill'] as const).map((f) => (
-            <LiveButton key={f} active={fit === f} onClick={() => setFit(f)}>{f}</LiveButton>
-          ))}
-          <LiveToggle label="fullBleed" checked={fullBleed} onChange={setFullBleed} />
-        </LiveRow>
+        <>
+          {control}
+          <LiveRow>
+            {(['contain', 'cover', 'fill'] as const).map((f) => (
+              <LiveButton key={f} active={fit === f} onClick={() => setFit(f)}>{f}</LiveButton>
+            ))}
+            <LiveToggle label="fullBleed" checked={fullBleed} onChange={setFullBleed} />
+          </LiveRow>
+        </>
       }
     >
-      <BookFrame bookRef={bookRef} key={`${fit}-${fullBleed}-${img ? 1 : 0}`}>
+      <BookFrame bookRef={bookRef} kind={kind} key={`${kind}-${fit}-${fullBleed}-${img ? 1 : 0}`}>
         {coverEls()}
         <Page color={PAGE_COLOR} />
         <Page color={PAGE_COLOR} image={img ?? undefined} fitMode={fit} fullBleed={fullBleed} />

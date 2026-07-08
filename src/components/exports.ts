@@ -1,4 +1,4 @@
-export type Badge = 'FULL-SCREEN' | 'COMPONENT' | 'HOOK' | 'UTIL' | 'TYPE'
+export type Badge = 'FULL-SCREEN' | 'COMPONENT' | 'HOOK' | 'UTIL' | 'TYPE' | 'CLASS'
 
 export const LIB_NAME = '@objectifthunes/react-three-book'
 export const LIB_VERSION = '0.6.7'
@@ -17,6 +17,7 @@ export interface ExportEntry {
 export type GroupId =
   | 'start'
   | 'components'
+  | 'binding'
   | 'declarative'
   | 'hooks'
   | 'textures'
@@ -26,6 +27,7 @@ export type GroupId =
 export const GROUPS: { id: GroupId; label: string }[] = [
   { id: 'start',       label: 'Getting started' },
   { id: 'components',  label: 'Components'      },
+  { id: 'binding',     label: 'Binding'         },
   { id: 'declarative', label: 'Declarative content' },
   { id: 'hooks',       label: 'Hooks'          },
   { id: 'textures',    label: 'Textures'       },
@@ -41,6 +43,9 @@ export const EXPORTS: ExportEntry[] = [
   // Components
   { slug: 'book',        name: 'Book', group: 'components', href: '/components/book/', lede: 'The R3F component. Drop it in a <Canvas>; configure paper, binding and shadows via props.', badge: 'COMPONENT' },
   { slug: 'interaction', name: 'BookInteraction', group: 'components', href: '/components/interaction/', lede: 'Pointer-drag page turning as a child of <Book>, with optional OrbitControls hand-off.', badge: 'COMPONENT' },
+
+  // Binding
+  { slug: 'glued-book-binding', name: 'GluedBookBinding', group: 'binding', href: '/binding/glued-book-binding/', lede: 'The premium hardcover spine as a binding you pass to <Book>: glued page block, rigid boards, one smooth cover shell.', badge: 'CLASS' },
 
   // Declarative content
   { slug: 'cover-page-spread', name: 'Cover, Page & Spread', group: 'declarative', href: '/declarative/cover-page-spread/', lede: 'Declare covers, pages and double-page spreads as JSX children instead of building BookContent by hand.', badge: 'COMPONENT' },
