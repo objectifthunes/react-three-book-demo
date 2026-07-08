@@ -1,10 +1,10 @@
 import Link from 'next/link'
+import { PlaygroundCta } from '@/components/PlaygroundCta'
 import { ExportPage } from '@/components/ExportPage'
 import { Source } from '@/components/Source'
 import { Notes } from '@/components/Notes'
 import { PropTable } from '@/components/PropTable'
 import { findExport } from '@/components/exports'
-import { LiveBook, LiveGlued } from '@/components/live/examples'
 
 const e = findExport('/components/book/')!
 
@@ -50,9 +50,8 @@ function Scene() {
 export default async function Page() {
   return (
     <ExportPage group={e.group} title={e.name} lede={e.lede}>
-      <LiveBook />
+      <PlaygroundCta />
       <Source code={CODE} lang="tsx" />
-      <LiveGlued />
       <PropTable
         rows={[
           { name: 'content', type: 'BookContent', desc: 'Imperative content. Omit when using <Cover>/<Page>/<Spread> children.' },

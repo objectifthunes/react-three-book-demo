@@ -1,6 +1,7 @@
 import {
   Boxes,
   BookMarked,
+  PlayCircle,
   Image,
   ListTree,
   Rocket,
@@ -14,6 +15,7 @@ import {
 import type { GroupId } from './exports'
 
 export const GROUP_ICONS: Record<GroupId, LucideIcon> = {
+  play:        PlayCircle,
   start:       Rocket,
   components:  Boxes,
   binding:     BookMarked,

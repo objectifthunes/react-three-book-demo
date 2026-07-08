@@ -1,10 +1,10 @@
 import Link from 'next/link'
+import { PlaygroundCta } from '@/components/PlaygroundCta'
 import { ExportPage } from '@/components/ExportPage'
 import { Source } from '@/components/Source'
 import { Notes } from '@/components/Notes'
 import { PropTable } from '@/components/PropTable'
 import { findExport } from '@/components/exports'
-import { LiveBook } from '@/components/live/examples'
 
 const e = findExport('/binding/staple-book-binding/')!
 
@@ -29,7 +29,7 @@ function Scene() {
 export default async function Page() {
   return (
     <ExportPage group={e.group} title={e.name} lede={e.lede}>
-      <LiveBook hint="StapleBookBinding: folded sheets, staples down the fold. Flip to Hardcover to compare." />
+      <PlaygroundCta />
       <Source code={CODE} lang="tsx" />
       <PropTable
         label="STAPLESETUP (binding.setup)"

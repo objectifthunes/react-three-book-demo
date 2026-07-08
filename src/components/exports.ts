@@ -15,6 +15,7 @@ export interface ExportEntry {
 }
 
 export type GroupId =
+  | 'play'
   | 'start'
   | 'components'
   | 'binding'
@@ -25,6 +26,7 @@ export type GroupId =
   | 'reference'
 
 export const GROUPS: { id: GroupId; label: string }[] = [
+  { id: 'play',        label: 'Playgrounds'     },
   { id: 'start',       label: 'Getting started' },
   { id: 'components',  label: 'Components'      },
   { id: 'binding',     label: 'Binding'         },
@@ -36,6 +38,10 @@ export const GROUPS: { id: GroupId; label: string }[] = [
 ]
 
 export const EXPORTS: ExportEntry[] = [
+  // Playgrounds — the two flagship canvases; every other page is snippet-first.
+  { slug: 'staple', name: 'Staple playground', group: 'play', href: '/play/staple/', lede: 'The magazine binding with every option live: paper, staples, turning, and text you type straight onto the book.', badge: 'FULL-SCREEN' },
+  { slug: 'hardcover', name: 'Hardcover playground', group: 'play', href: '/play/hardcover/', lede: 'The glued case binding with every option live: rigid boards, spine setup, turning, and WYSIWYG titles.', badge: 'FULL-SCREEN' },
+
   // Getting started
   { slug: 'quick-start', name: 'Quick start', group: 'start', href: '/start/quick-start/', lede: 'Render a 3D page-turning book inside a React Three Fiber <Canvas> in a single component.' },
   { slug: 'concepts',    name: 'Core concepts', group: 'start', href: '/start/concepts/', lede: 'How the React wrapper maps onto the underlying three-book: the component, declarative content, and hooks.' },
