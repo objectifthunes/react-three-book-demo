@@ -4,7 +4,7 @@ import { Source } from '@/components/Source'
 import { Notes } from '@/components/Notes'
 import { PropTable } from '@/components/PropTable'
 import { findExport } from '@/components/exports'
-import { LiveBook } from '@/components/live/examples'
+import { LiveBook, LiveGlued } from '@/components/live/examples'
 
 const e = findExport('/components/book/')!
 
@@ -52,10 +52,11 @@ export default async function Page() {
     <ExportPage group={e.group} title={e.name} lede={e.lede}>
       <LiveBook />
       <Source code={CODE} lang="tsx" />
+      <LiveGlued />
       <PropTable
         rows={[
           { name: 'content', type: 'BookContent', desc: 'Imperative content. Omit when using <Cover>/<Page>/<Spread> children.' },
-          { name: 'binding', type: 'BookBinding', def: 'null', desc: 'How the papers are bound — e.g. new StapleBookBinding().' },
+          { name: 'binding', type: 'BookBinding', def: 'null', desc: 'How the papers are bound — new StapleBookBinding() (magazine) or new GluedBookBinding() (hardcover case).' },
           { name: 'direction', type: 'BookDirection', def: 'LeftToRight', desc: 'Reading direction for declarative content.' },
           { name: 'initialOpenProgress', type: 'number', def: '0', desc: 'Initial open state, 0 (closed) to 1 (fully open).' },
           { name: 'castShadows', type: 'boolean', def: 'true', desc: 'Whether the book casts shadows.' },

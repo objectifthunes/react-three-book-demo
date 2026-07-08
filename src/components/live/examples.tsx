@@ -7,6 +7,7 @@ import {
   Book,
   BookInteraction,
   StapleBookBinding,
+  GluedBookBinding,
   Cover,
   Page,
   Spread,
@@ -30,14 +31,25 @@ function coverPaperSetup() {
 }
 
 /** Lights, ground (from the stage) + OrbitControls + <Book> opened to its first page. */
-function BookFrame({ bookRef, onReady, openToPage = 1, children }: {
+function BookFrame({ bookRef, onReady, openToPage = 1, kind = 'staple', children }: {
   bookRef: React.RefObject<ThreeBook | null>
   onReady?: (book: ThreeBook) => void
   openToPage?: number
+  kind?: 'staple' | 'glued'
   children: ReactNode
 }) {
   const orbit = useRef<{ enabled: boolean } | null>(null)
-  const binding = useMemo(() => new StapleBookBinding(), [])
+  const binding = useMemo(
+    () => (kind === 'glued' ? new GluedBookBinding() : new StapleBookBinding()),
+    [kind],
+  )
+  // Glued (hardcover) case: rigid, thicker boards; staple: floppy covers.
+  const coverSetup = useMemo(
+    () => (kind === 'glued'
+      ? { ...coverPaperSetup(), thickness: 0.06, rigid: true }
+      : coverPaperSetup()),
+    [kind],
+  )
   const handleBuilt = useCallback((book: ThreeBook) => {
     try { book.setOpenProgressByIndex(book.coverPaperCount + openToPage) } catch { /* noop */ }
     onReady?.(book)
@@ -51,7 +63,7 @@ function BookFrame({ bookRef, onReady, openToPage = 1, children }: {
         initialOpenProgress={0}
         castShadows
         pagePaperSetup={pagePaperSetup()}
-        coverPaperSetup={coverPaperSetup()}
+        coverPaperSetup={coverSetup}
         onBuilt={handleBuilt}
       >
         <BookInteraction orbitControlsRef={orbit} />
@@ -113,6 +125,17 @@ export function LiveBook({ pageCount = 8, hint = 'Drag a page to turn it · drag
   return (
     <LiveR3FStage hint={hint}>
       {art && <BookFrame bookRef={bookRef}>{storyCovers(art)}{storyPages(art, pageCount)}</BookFrame>}
+    </LiveR3FStage>
+  )
+}
+
+/** The hardcover (glued-spine) case: rigid boards, one smooth cover shell. */
+export function LiveGlued({ pageCount = 8 }: { pageCount?: number }) {
+  const bookRef = useRef<ThreeBook | null>(null)
+  const art = useStorybookArt()
+  return (
+    <LiveR3FStage hint="GluedBookBinding: rigid boards hinge, floppy pages glue to the smooth spine">
+      {art && <BookFrame bookRef={bookRef} kind="glued">{storyCovers(art)}{storyPages(art, pageCount)}</BookFrame>}
     </LiveR3FStage>
   )
 }

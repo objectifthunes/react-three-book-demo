@@ -9,8 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@objectifthunes/react-three-book": "^0.7.0",
-    "@objectifthunes/three-book": "^0.6.0",
+    "@objectifthunes/react-three-book": "^0.8.0",
+    "@objectifthunes/three-book": "^0.7.0",
     "@react-three/drei": "^10.0.0",
     "@react-three/fiber": "^9.0.0",
     "lucide-react": "^1.17.0",
