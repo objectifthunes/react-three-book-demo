@@ -19,6 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout React wrapper source
+        uses: actions/checkout@v4
+        with:
+          repository: MaxouJS/react-three-book
+          ref: 798d0d2cf39b2756ddce509df59f6abe33336081
+          path: .packages/react-three-book
       - uses: pnpm/action-setup@v4
         with:
           version: 10
@@ -26,6 +32,9 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+          cache-dependency-path: |
+            pnpm-lock.yaml
+            .packages/react-three-book/pnpm-lock.yaml
       # @objectifthunes/* are RESTRICTED packages. Metadata reads authenticate
       # via the scope registry, but the tarball download only carries the token
       # when always-auth is set — without it the .tgz GET is anonymous and 404s.
@@ -38,15 +47,19 @@ jobs:
           } >> ~/.npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      # Freshly published restricted tarballs can 404 on the Actions CDN edge
-      # for a few minutes after publish — retry the install through it.
-      - name: Install (retry through npm propagation lag)
-        run: |
-          for i in 1 2 3 4 5 6; do
-            pnpm install --frozen-lockfile && exit 0
-            echo "install attempt $i failed; waiting for npm propagation…"; sleep 30
-          done
-          pnpm install --frozen-lockfile
+      # The granular npm token can read the existing restricted package but
+      # cannot publish 0.9.0. Build the exact pushed wrapper commit locally so
+      # Pages does not depend on an unavailable registry tarball.
+      - name: Install React wrapper workspace
+        working-directory: .packages/react-three-book
+        run: pnpm install --frozen-lockfile
+      - name: Build React wrapper package
+        working-directory: .packages/react-three-book
+        run: pnpm --filter @objectifthunes/react-three-book prepack
+      - name: Use local React wrapper package
+        run: pnpm pkg set 'dependencies.@objectifthunes/react-three-book=file:./.packages/react-three-book/packages/react-three-book'
+      - name: Install demo
+        run: pnpm install --no-frozen-lockfile
       - run: pnpm build
       - run: touch out/.nojekyll
       - uses: actions/configure-pages@v5
