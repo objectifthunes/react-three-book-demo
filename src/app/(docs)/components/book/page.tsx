@@ -55,7 +55,7 @@ export default async function Page() {
       <PropTable
         rows={[
           { name: 'content', type: 'BookContent', desc: 'Imperative content. Omit when using <Cover>/<Page>/<Spread> children.' },
-          { name: 'binding', type: 'BookBinding', def: 'null', desc: 'How the papers are bound — new StapleBookBinding() (magazine) or new GluedBookBinding() (hardcover case).' },
+          { name: 'binding', type: 'BookBinding', def: 'null', desc: 'How the papers are bound — new StapleBookBinding() (magazine) or new GluedBookBinding() (glued spine).' },
           { name: 'direction', type: 'BookDirection', def: 'LeftToRight', desc: 'Reading direction for declarative content.' },
           { name: 'initialOpenProgress', type: 'number', def: '0', desc: 'Initial open state, 0 (closed) to 1 (fully open).' },
           { name: 'castShadows', type: 'boolean', def: 'true', desc: 'Whether the book casts shadows.' },

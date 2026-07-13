@@ -90,7 +90,8 @@ export function Playground({ kind }: { kind: PlaygroundKind }) {
   const [pageThickness, setPageThickness] = useState(0.02)
   const [stiffness, setStiffness] = useState(0.2)
   const [coverThickness, setCoverThickness] = useState(glued ? 0.06 : 0.04)
-  const [rigid, setRigid] = useState(glued)
+  const [coverSoftness, setCoverSoftness] = useState(glued ? 0.25 : 0.5)
+  const [rigid, setRigid] = useState(false)
   // Book
   const [alignToGround, setAlignToGround] = useState(true)
   const [hideBinder, setHideBinder] = useState(false)
@@ -173,8 +174,9 @@ export function Playground({ kind }: { kind: PlaygroundKind }) {
             <LiveSlider label="page thickness" min={0.008} max={0.05} step={0.002} value={pageThickness} onChange={setPageThickness} format={(x) => x.toFixed(3)} />
             <LiveSlider label="stiffness" min={0.05} max={0.9} step={0.05} value={stiffness} onChange={setStiffness} format={(x) => x.toFixed(2)} />
             <LiveSlider label="cover thickness" min={0.02} max={0.1} step={0.005} value={coverThickness} onChange={setCoverThickness} format={(x) => x.toFixed(3)} />
+            <LiveSlider label="cover softness" min={0} max={1} step={0.05} value={coverSoftness} onChange={setCoverSoftness} format={(x) => x.toFixed(2)} />
             {glued
-              ? <LiveToggle label="rigid boards" checked={rigid} onChange={setRigid} />
+              ? <LiveToggle label="rigid cover" checked={rigid} onChange={setRigid} />
               : <LiveToggle label="hideBinder" checked={hideBinder} onChange={setHideBinder} />}
             <LiveToggle label="alignToGround" checked={alignToGround} onChange={setAlignToGround} />
           </LiveRow>
@@ -215,7 +217,7 @@ export function Playground({ kind }: { kind: PlaygroundKind }) {
         alignToGround={alignToGround}
         hideBinder={hideBinder}
         pagePaperSetup={{ width: 2, height: 3, thickness: pageThickness, stiffness, color: new THREE.Color(1, 1, 1), material: null }}
-        coverPaperSetup={{ width: 2.1, height: 3.1, thickness: coverThickness, stiffness: 0.5, rigid, color: new THREE.Color(1, 1, 1), material: null }}
+        coverPaperSetup={{ width: 2.1, height: 3.1, thickness: coverThickness, stiffness: 1 - coverSoftness, rigid, color: new THREE.Color(1, 1, 1), material: null }}
         onBuilt={(book) => {
           try { book.setOpenProgressByIndex(book.coverPaperCount) } catch { /* noop */ }
         }}

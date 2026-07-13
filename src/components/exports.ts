@@ -1,7 +1,7 @@
 export type Badge = 'FULL-SCREEN' | 'COMPONENT' | 'HOOK' | 'UTIL' | 'TYPE' | 'CLASS'
 
 export const LIB_NAME = '@objectifthunes/react-three-book'
-export const LIB_VERSION = '0.6.7'
+export const LIB_VERSION = '0.9.0'
 export const NPM_URL = 'https://www.npmjs.com/package/@objectifthunes/react-three-book'
 export const REPO_URL = 'https://github.com/objectifthunes/react-three-book'
 
@@ -40,7 +40,7 @@ export const GROUPS: { id: GroupId; label: string }[] = [
 export const EXPORTS: ExportEntry[] = [
   // Playgrounds — the two flagship canvases; every other page is snippet-first.
   { slug: 'staple', name: 'Staple playground', group: 'play', href: '/play/staple/', lede: 'The magazine binding with every option live: paper, staples, turning, and text you type straight onto the book.', badge: 'FULL-SCREEN' },
-  { slug: 'hardcover', name: 'Hardcover playground', group: 'play', href: '/play/hardcover/', lede: 'The glued case binding with every option live: rigid boards, spine setup, turning, and WYSIWYG titles.', badge: 'FULL-SCREEN' },
+  { slug: 'glued-spine', name: 'Glued spine playground', group: 'play', href: '/play/glued-spine/', lede: 'The glued spine binding with every option live: cover softness, spine setup, turning, and WYSIWYG titles.', badge: 'FULL-SCREEN' },
 
   // Getting started
   { slug: 'quick-start', name: 'Quick start', group: 'start', href: '/start/quick-start/', lede: 'Render a 3D page-turning book inside a React Three Fiber <Canvas> in a single component.' },
@@ -52,7 +52,7 @@ export const EXPORTS: ExportEntry[] = [
 
   // Binding
   { slug: 'staple-book-binding', name: 'StapleBookBinding', group: 'binding', href: '/binding/staple-book-binding/', lede: 'The saddle-stitched magazine spine you pass to <Book>: folded sheets down a stapled fold, no setup.', badge: 'CLASS' },
-  { slug: 'glued-book-binding', name: 'GluedBookBinding', group: 'binding', href: '/binding/glued-book-binding/', lede: 'The hardcover case spine you pass to <Book>: glued page block, rigid boards, one smooth cover shell.', badge: 'CLASS' },
+  { slug: 'glued-book-binding', name: 'GluedBookBinding', group: 'binding', href: '/binding/glued-book-binding/', lede: 'The glued spine you pass to <Book>: one smooth, stiffness-controlled cover mesh around the page block.', badge: 'CLASS' },
 
   // Declarative content
   { slug: 'cover-page-spread', name: 'Cover, Page & Spread', group: 'declarative', href: '/declarative/cover-page-spread/', lede: 'Declare covers, pages and double-page spreads as JSX children instead of building BookContent by hand.', badge: 'COMPONENT' },

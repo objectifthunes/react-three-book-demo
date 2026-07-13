@@ -27,8 +27,8 @@ function Scene() {
       ref={bookRef}
       binding={binding}
       castShadows
-      // Rigid, thicker boards make it read as a hardcover; pages stay floppy.
-      coverPaperSetup={{ width: 2.15, height: 3.15, thickness: 0.06, stiffness: 0.5, rigid: true, color: new THREE.Color(1, 1, 1), material: null }}
+      // One modular cover: lower stiffness is softer; rigid is an optional override.
+      coverPaperSetup={{ width: 2.15, height: 3.15, thickness: 0.06, stiffness: 0.75, rigid: false, color: new THREE.Color(1, 1, 1), material: null }}
       pagePaperSetup={{ width: 2, height: 3, thickness: 0.03, stiffness: 0.2, color: new THREE.Color(1, 1, 1), material: null }}
     >
       <BookInteraction />
@@ -61,16 +61,16 @@ export default async function Page() {
         <p>
           <code>GluedBookBinding</code> is a drop-in alternative to{' '}
           <Link href="/components/book/">StapleBookBinding</Link> — pass it as the{' '}
-          <code>&lt;Book&gt;</code> <code>binding</code> prop. The whole cover (front board, spine,
-          back board) is <strong>one constant-thickness mesh</strong> wrapped around the block like a
-          manga cover, and the pages are glued to that spine surface.
+          <code>&lt;Book&gt;</code> <code>binding</code> prop. The whole cover (front, spine and back)
+          is <strong>one constant-thickness mesh</strong> wrapped around the block, and the pages
+          are glued to that spine surface.
         </p>
         <p>
-          The four <code>&lt;Cover&gt;</code> surfaces map to the case unchanged — front, inner
-          front, inner back, back — and <code>setup.spineTexture</code> prints the spine. Set{' '}
-          <code>rigid: true</code> on the cover paper (see the <code>&lt;Book&gt;</code> page) so the
-          boards turn as stiff plates while the pages stay floppy. Use the <strong>spine toggle</strong>{' '}
-          on the canvas above to compare it against the staple binding.
+          The four <code>&lt;Cover&gt;</code> surfaces map to the one-piece glued cover unchanged — front, inner
+          front, inner back, back — and <code>setup.spineTexture</code> prints the spine. Cover
+          softness is modular: change <code>coverPaperSetup.stiffness</code> just as you would for
+          the staple binding, or set <code>rigid: true</code> for a fully rigid cover. This remains
+          one <code>GluedBookBinding</code>, one book, and one cover mesh.
         </p>
       </Notes>
     </ExportPage>

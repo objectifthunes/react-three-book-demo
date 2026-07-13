@@ -50,9 +50,9 @@ export default async function Page() {
           <code>binding</code> prop; it needs no configuration.
         </p>
         <p>
-          For the rigid hardcover look see{' '}
-          <Link href="/binding/glued-book-binding/">GluedBookBinding</Link> — the{' '}
-          <strong>spine toggle</strong> on the canvas above flips between the two.
+          For a glued spine with the same adjustable cover softness, see{' '}
+          <Link href="/binding/glued-book-binding/">GluedBookBinding</Link> and compare it in the{' '}
+          <Link href="/play/glued-spine/">Glued spine playground</Link>.
         </p>
       </Notes>
     </ExportPage>

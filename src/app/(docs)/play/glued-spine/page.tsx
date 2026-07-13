@@ -4,7 +4,7 @@ import { Notes } from '@/components/Notes'
 import { findExport } from '@/components/exports'
 import { Playground } from '@/components/live/playground'
 
-const e = findExport('/play/hardcover/')!
+const e = findExport('/play/glued-spine/')!
 
 export default async function Page() {
   return (
@@ -12,8 +12,8 @@ export default async function Page() {
       <Playground kind="glued" />
       <Notes>
         <p>
-          The full <code>GluedBookBinding</code> surface, live and declarative: rigid boards, hinge
-          and gutter flex, spine colour — and two WYSIWYG fields. The <strong>headline</strong> is a{' '}
+          The full <code>GluedBookBinding</code> surface, live and declarative: cover softness, the
+          optional rigid override, hinge and gutter flex, spine colour — and two WYSIWYG fields. The <strong>headline</strong> is a{' '}
           <code>&lt;Text&gt;</code> child of page 1 re-rendering as you type; the{' '}
           <strong>spine title</strong> becomes a canvas texture on{' '}
           <code>binding.setup.spineTexture</code>.
