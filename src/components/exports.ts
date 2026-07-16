@@ -1,7 +1,7 @@
 export type Badge = 'FULL-SCREEN' | 'COMPONENT' | 'HOOK' | 'UTIL' | 'TYPE' | 'CLASS'
 
 export const LIB_NAME = '@objectifthunes/react-three-book'
-export const LIB_VERSION = '0.8.0'
+export const LIB_VERSION = '0.9.0'
 export const NPM_URL = 'https://www.npmjs.com/package/@objectifthunes/react-three-book'
 export const REPO_URL = 'https://github.com/objectifthunes/react-three-book'
 
